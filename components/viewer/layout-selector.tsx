@@ -37,7 +37,7 @@ export function LayoutSelector() {
     <div
       role="group"
       aria-label="Layout viewport"
-      className="flex items-center gap-0.5 rounded-lg border border-input bg-background/40 p-0.5"
+      className="flex shrink-0 items-center gap-0.5 rounded-lg border border-input bg-background/40 p-0.5"
     >
       {OPTIONS.map((opt) => {
         const active = layout === opt.value;
@@ -50,7 +50,7 @@ export function LayoutSelector() {
             title={`Layout ${opt.label}`}
             onClick={() => setLayout(opt.value)}
             className={cn(
-              "flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+              "flex items-center gap-1 rounded-md px-1.5 py-1 text-[10px] font-medium transition-colors sm:px-2 sm:text-xs",
               active
                 ? "bg-primary/15 text-primary ring-1 ring-inset ring-primary/40"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"

@@ -41,6 +41,18 @@ export function Viewport({
     wc: number;
   } | null>(null);
 
+  const touchRef = React.useRef<{
+    startX: number;
+    startY: number;
+    panX: number;
+    panY: number;
+    ww: number;
+    wc: number;
+    startZoom: number;
+    startDistance: number;
+    started: boolean;
+  } | null>(null);
+
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     setActiveViewport(index);
     if (activeTool === "pan" || activeTool === "window") {
@@ -80,6 +92,7 @@ export function Viewport({
 
   const endDrag = () => {
     dragRef.current = null;
+    touchRef.current = null;
     setDragging(false);
   };
 
@@ -96,6 +109,97 @@ export function Viewport({
           study.maxSlice,
           Math.max(1, viewport.slice + delta)
         ),
+      });
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setActiveViewport(index);
+
+    if (e.touches.length === 1) {
+      touchRef.current = {
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        panX: viewport.panX,
+        panY: viewport.panY,
+        ww: viewport.windowWidth,
+        wc: viewport.windowCenter,
+        startZoom: viewport.zoom,
+        startDistance: 0,
+        started: true,
+      };
+      return;
+    }
+
+    if (e.touches.length >= 2) {
+      const distance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      touchRef.current = {
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        panX: viewport.panX,
+        panY: viewport.panY,
+        ww: viewport.windowWidth,
+        wc: viewport.windowCenter,
+        startZoom: viewport.zoom,
+        startDistance: distance,
+        started: true,
+      };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!touchRef.current || !touchRef.current.started) return;
+
+    if (e.touches.length >= 2) {
+      const distance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const factor = distance / Math.max(1, touchRef.current.startDistance || distance);
+      patchViewport(index, {
+        zoom: Math.min(10, Math.max(0.2, touchRef.current.startZoom * factor)),
+      });
+      return;
+    }
+
+    const touch = e.touches[0];
+    const dx = touch.clientX - touchRef.current.startX;
+    const dy = touch.clientY - touchRef.current.startY;
+
+    if (activeTool === "pan") {
+      patchViewport(index, {
+        panX: touchRef.current.panX + dx,
+        panY: touchRef.current.panY + dy,
+      });
+      return;
+    }
+
+    if (activeTool === "window") {
+      patchViewport(index, {
+        windowWidth: Math.max(1, Math.round(touchRef.current.ww + dx * 3)),
+        windowCenter: Math.max(
+          -1024,
+          Math.min(4095, Math.round(touchRef.current.wc + dy * 3))
+        ),
+      });
+      return;
+    }
+
+    if (activeTool === "scroll" && study && study.maxSlice > 1) {
+      const delta = Math.round(dy / 18) * -1;
+      patchViewport(index, {
+        slice: Math.min(study.maxSlice, Math.max(1, viewport.slice + delta)),
+      });
+      return;
+    }
+
+    if (activeTool === "zoom") {
+      const factor = Math.exp((-dy / 220) * 1.6);
+      patchViewport(index, {
+        zoom: Math.min(10, Math.max(0.2, touchRef.current.startZoom * factor)),
       });
     }
   };
@@ -140,6 +244,11 @@ export function Viewport({
       onPointerCancel={endDrag}
       onPointerLeave={endDrag}
       onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={endDrag}
+      onTouchCancel={endDrag}
+      style={{ touchAction: "none" }}
     >
       <img
         src={study.imageSrc}

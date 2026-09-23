@@ -40,7 +40,7 @@ export function DicomJpgToggle() {
   return (
     <div
       className={cn(
-        "flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5",
+        "flex shrink-0 items-center gap-1.5 rounded-lg border px-2 py-1 sm:px-2.5 sm:py-1.5",
         isDicom
           ? "border-primary/50 bg-primary/10"
           : "border-input bg-background/40"
@@ -49,11 +49,11 @@ export function DicomJpgToggle() {
     >
       <span
         className={cn(
-          "flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide",
+          "flex items-center gap-1 text-[9px] font-medium uppercase tracking-wide sm:text-[11px]",
           !isDicom ? "text-primary" : "text-muted-foreground"
         )}
       >
-        <FileImage className="h-3.5 w-3.5" />
+        <FileImage className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
         JPG
       </span>
       <Switch
@@ -63,11 +63,11 @@ export function DicomJpgToggle() {
       />
       <span
         className={cn(
-          "flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide",
+          "flex items-center gap-1 text-[9px] font-medium uppercase tracking-wide sm:text-[11px]",
           isDicom ? "text-primary" : "text-muted-foreground"
         )}
       >
-        <Database className="h-3.5 w-3.5" />
+        <Database className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
         DICOM
       </span>
     </div>

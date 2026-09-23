@@ -24,11 +24,11 @@ export function TopActionBar() {
   const activeViewportIndex = useViewerStore((s) => s.activeViewportIndex);
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/50 px-3 backdrop-blur">
+    <header className="flex h-auto min-h-14 shrink-0 items-center gap-2 border-b border-border bg-card/50 px-2.5 backdrop-blur sm:px-3">
       <Button
         variant="ghost"
         size="icon"
-        className="lg:hidden"
+        className="shrink-0 lg:hidden"
         aria-label="Buka daftar studi"
         onClick={() => setBrowserOpen(true)}
       >
@@ -36,12 +36,12 @@ export function TopActionBar() {
       </Button>
 
       {/* Brand */}
-      <div className="flex items-center gap-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-inset ring-primary/40">
+      <div className="flex min-w-0 items-center gap-2">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-inset ring-primary/40">
           <Activity className="h-4 w-4 text-primary" />
         </span>
-        <div className="leading-tight">
-          <p className="text-sm font-semibold tracking-tight">
+        <div className="min-w-0 leading-tight">
+          <p className="truncate text-sm font-semibold tracking-tight">
             RSSA <span className="text-primary">Viewer</span>
           </p>
           <p className="hidden font-mono text-[9px] uppercase tracking-widest text-muted-foreground sm:block">
@@ -50,7 +50,7 @@ export function TopActionBar() {
         </div>
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex min-w-0 items-center gap-1 sm:gap-2">
         {/* View & Load / Archive toggle (desktop) */}
         <div
           role="group"
@@ -85,13 +85,15 @@ export function TopActionBar() {
           </button>
         </div>
 
-        <DicomJpgToggle />
-        <LayoutSelector />
+        <div className="flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <DicomJpgToggle />
+          <LayoutSelector />
+        </div>
 
         {/* More menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Menu lainnya">
+            <Button variant="ghost" size="icon" aria-label="Menu lainnya" className="shrink-0">
               <MoreVertical className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>

@@ -92,8 +92,8 @@ export function ManipulationToolbar({
   const tooltipSide = side === "bottom" ? "top" : "bottom";
 
   return (
-    <div className="flex items-center gap-1 border-border px-2 py-1.5">
-      <div className="flex items-center gap-0.5">
+    <div className="flex items-center gap-1 overflow-x-auto border-border px-2 py-1.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex shrink-0 items-center gap-0.5">
         {ACTIVE_TOOLS.map((t) => (
           <ToolButton
             key={t.id}
@@ -106,9 +106,9 @@ export function ManipulationToolbar({
         ))}
       </div>
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
+      <Separator orientation="vertical" className="mx-1 h-6 shrink-0" />
 
-      <div className="flex items-center gap-0.5">
+      <div className="flex shrink-0 items-center gap-0.5">
         <ToolButton
           icon={SunMoon}
           label="Invert (Negatif)"
@@ -139,9 +139,9 @@ export function ManipulationToolbar({
         />
       </div>
 
-      <Separator orientation="vertical" className="mx-1 h-6" />
+      <Separator orientation="vertical" className="mx-1 h-6 shrink-0" />
 
-      <div className="flex items-center gap-0.5">
+      <div className="flex shrink-0 items-center gap-0.5">
         <ToolButton
           icon={RotateCcw}
           label="Reset Viewport"

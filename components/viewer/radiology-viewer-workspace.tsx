@@ -21,17 +21,17 @@ export function RadiologyViewerWorkspace() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="flex h-dvh w-full flex-col overflow-hidden bg-background text-foreground">
+      <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-background text-foreground">
         <TopActionBar />
 
-        <div className="flex min-h-0 flex-1">
+        <div className="flex min-h-0 flex-1 overflow-hidden">
           {/* Desktop sidebar: Study Browser */}
           <aside className="hidden w-80 shrink-0 border-r border-border bg-card/30 lg:flex">
             <StudyBrowser />
           </aside>
 
           {/* Main viewer column */}
-          <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
             {/* Manipulation toolbar: top on desktop */}
             <div className="hidden border-b border-border bg-card/30 lg:block">
               <ManipulationToolbar side="top" />
@@ -49,7 +49,7 @@ export function RadiologyViewerWorkspace() {
 
       {/* Mobile: swipe-up bottom sheet for study list */}
       <Sheet open={browserOpen} onOpenChange={setBrowserOpen}>
-        <SheetContent side="bottom" className="flex h-[78vh] flex-col p-0">
+        <SheetContent side="bottom" className="flex h-[82dvh] flex-col p-0">
           <SheetHeader className="shrink-0 border-b border-border p-3 text-left">
             <SheetTitle className="text-base">Daftar Studi</SheetTitle>
             <SheetDescription className="text-xs">
