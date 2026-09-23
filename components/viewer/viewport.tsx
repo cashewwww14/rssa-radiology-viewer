@@ -103,7 +103,8 @@ export function Viewport({
         zoom: Math.min(10, Math.max(0.2, viewport.zoom * factor)),
       });
     } else if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const delta = e.deltaY > 0 ? 1 : -1;
+      const magnitude = Math.max(1, Math.round(Math.abs(e.deltaY) / 30));
+      const delta = e.deltaY > 0 ? magnitude : -magnitude;
       patchViewport(index, {
         slice: Math.min(
           study.maxSlice,
@@ -189,7 +190,8 @@ export function Viewport({
     }
 
     if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const delta = Math.round(dy / 18) * -1;
+      const magnitude = Math.max(1, Math.round(Math.abs(dy) / 28));
+      const delta = dy > 0 ? magnitude : -magnitude;
       patchViewport(index, {
         slice: Math.min(study.maxSlice, Math.max(1, viewport.slice + delta)),
       });
@@ -212,8 +214,11 @@ export function Viewport({
     );
   }
 
+  const sliceRatio = study.maxSlice > 1 ? (viewport.slice - 1) / (study.maxSlice - 1) : 0;
+  const sliceShiftY = study.maxSlice > 1 ? (sliceRatio - 0.5) * 18 : 0;
+
   const transform = [
-    `translate(${viewport.panX}px, ${viewport.panY}px)`,
+    `translate(${viewport.panX}px, ${viewport.panY + sliceShiftY}px)`,
     `scale(${viewport.zoom})`,
     `scaleX(${viewport.flipH ? -1 : 1})`,
     `scaleY(${viewport.flipV ? -1 : 1})`,
