@@ -103,7 +103,7 @@ export function Viewport({
         zoom: Math.min(10, Math.max(0.2, viewport.zoom * factor)),
       });
     } else if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const magnitude = Math.max(1, Math.round(Math.abs(e.deltaY) / 30));
+      const magnitude = Math.max(1, Math.round(Math.abs(e.deltaY) / 180));
       const delta = e.deltaY > 0 ? magnitude : -magnitude;
       patchViewport(index, {
         slice: Math.min(
@@ -190,7 +190,7 @@ export function Viewport({
     }
 
     if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const magnitude = Math.max(1, Math.round(Math.abs(dy) / 28));
+      const magnitude = Math.max(1, Math.round(Math.abs(dy) / 120));
       const delta = dy > 0 ? magnitude : -magnitude;
       patchViewport(index, {
         slice: Math.min(study.maxSlice, Math.max(1, viewport.slice + delta)),
