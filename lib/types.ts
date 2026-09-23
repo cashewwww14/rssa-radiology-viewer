@@ -33,10 +33,13 @@ export interface Study {
   seriesCount: number;
   imageCount: number;
   imageSrc: string;
+  sliceImages?: string[];
   imageType: ImageType;
   windowWidth: number;
   windowCenter: number;
   maxSlice: number;
+  pixelSpacingMm?: number;
+  sliceThicknessMm?: number;
   /** Prior study of the same patient (used for side-by-side comparison) */
   priorStudyId?: string;
   /** Archived / historical studies live in the Archive browser mode */

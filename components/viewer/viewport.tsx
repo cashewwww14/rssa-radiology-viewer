@@ -217,6 +217,14 @@ export function Viewport({
   const sliceRatio = study.maxSlice > 1 ? (viewport.slice - 1) / (study.maxSlice - 1) : 0;
   const sliceShiftY = study.maxSlice > 1 ? (sliceRatio - 0.5) * 18 : 0;
 
+  const currentImageSrc =
+    study.sliceImages?.[
+      Math.min(
+        study.sliceImages.length - 1,
+        Math.max(0, viewport.slice - 1)
+      )
+    ] ?? study.imageSrc;
+
   const transform = [
     `translate(${viewport.panX}px, ${viewport.panY + sliceShiftY}px)`,
     `scale(${viewport.zoom})`,
@@ -256,7 +264,7 @@ export function Viewport({
       style={{ touchAction: "none" }}
     >
       <img
-        src={study.imageSrc}
+        src={currentImageSrc}
         alt={study.studyDescription}
         draggable={false}
         className="absolute inset-0 h-full w-full select-none object-contain"

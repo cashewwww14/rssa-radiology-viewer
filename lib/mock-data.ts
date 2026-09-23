@@ -23,12 +23,17 @@ export const MOCK_STUDIES: Study[] = [
     institution: "RSUD Dr. Saiful Anwar",
     referringPhysician: "dr. Hery, Sp.S",
     seriesCount: 6,
-    imageCount: 144,
-    imageSrc: "/images/mr-head-vestibular-schwannoma.png",
+    imageCount: 90,
+    imageSrc: "/images/mr-head-vestibular-series/instance-0001.png",
+    sliceImages: Array.from({ length: 90 }, (_, i) =>
+      `/images/mr-head-vestibular-series/instance-${String(i + 1).padStart(4, "0")}.png`
+    ),
     imageType: "mri",
-    windowWidth: 1800,
-    windowCenter: 450,
-    maxSlice: 30,
+    windowWidth: 397,
+    windowCenter: 199,
+    maxSlice: 90,
+    pixelSpacingMm: 0.898438,
+    sliceThicknessMm: 2,
     priorStudyId: "STU-2026-1001-P",
   },
   {
