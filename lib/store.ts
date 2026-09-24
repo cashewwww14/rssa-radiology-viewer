@@ -119,7 +119,7 @@ export const useViewerStore = create<ViewerStore>((set) => ({
   studies: MOCK_STUDIES,
   selectedStudyId: MOCK_STUDIES[0].id,
   activeViewportIndex: 0,
-  activeTool: "pointer",
+  activeTool: "scroll",
   layout: "1x1",
   format: "jpg",
   formatSwitching: false,
@@ -190,7 +190,7 @@ export const useViewerStore = create<ViewerStore>((set) => ({
 
   resetAll: () =>
     set((state) => ({
-      activeTool: "pointer",
+      activeTool: "scroll",
       layout: "1x1",
       activeViewportIndex: 0,
       referenceLines: false,

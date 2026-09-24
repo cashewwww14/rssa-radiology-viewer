@@ -103,8 +103,7 @@ export function Viewport({
         zoom: Math.min(10, Math.max(0.2, viewport.zoom * factor)),
       });
     } else if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const magnitude = Math.max(1, Math.round(Math.abs(e.deltaY) / 180));
-      const delta = e.deltaY > 0 ? magnitude : -magnitude;
+      const delta = Math.sign(e.deltaY || 1) * Math.max(0.25, Math.abs(e.deltaY) / 900);
       patchViewport(index, {
         slice: Math.min(
           study.maxSlice,
@@ -190,8 +189,7 @@ export function Viewport({
     }
 
     if (activeTool === "scroll" && study && study.maxSlice > 1) {
-      const magnitude = Math.max(1, Math.round(Math.abs(dy) / 120));
-      const delta = dy > 0 ? magnitude : -magnitude;
+      const delta = Math.sign(dy || 1) * Math.max(0.25, Math.abs(dy) / 220);
       patchViewport(index, {
         slice: Math.min(study.maxSlice, Math.max(1, viewport.slice + delta)),
       });
@@ -217,13 +215,13 @@ export function Viewport({
   const sliceRatio = study.maxSlice > 1 ? (viewport.slice - 1) / (study.maxSlice - 1) : 0;
   const sliceShiftY = study.maxSlice > 1 ? (sliceRatio - 0.5) * 18 : 0;
 
+  const currentSliceIndex = Math.min(
+    Math.max(0, Math.round(viewport.slice) - 1),
+    Math.max(0, (study.sliceImages?.length ?? 1) - 1)
+  );
+
   const currentImageSrc =
-    study.sliceImages?.[
-      Math.min(
-        study.sliceImages.length - 1,
-        Math.max(0, viewport.slice - 1)
-      )
-    ] ?? study.imageSrc;
+    study.sliceImages?.[currentSliceIndex] ?? study.imageSrc;
 
   const transform = [
     `translate(${viewport.panX}px, ${viewport.panY + sliceShiftY}px)`,
